@@ -1,0 +1,450 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>WeiWatchers Documentation</title>
+    <link rel="icon" type="image/png" href="images/sc-icon.png">
+
+    <style>
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight, .highlight .w {
+  color: #f8f8f2;
+  background-color: #272822;
+}
+.highlight .err {
+  color: #151515;
+  background-color: #ac4142;
+}
+.highlight .c, .highlight .cd, .highlight .cm, .highlight .c1, .highlight .cs {
+  color: #505050;
+}
+.highlight .cp {
+  color: #f4bf75;
+}
+.highlight .nt {
+  color: #f4bf75;
+}
+.highlight .o, .highlight .ow {
+  color: #d0d0d0;
+}
+.highlight .p, .highlight .pi {
+  color: #d0d0d0;
+}
+.highlight .gi {
+  color: #90a959;
+}
+.highlight .gd {
+  color: #ac4142;
+}
+.highlight .gh {
+  color: #6a9fb5;
+  background-color: #151515;
+  font-weight: bold;
+}
+.highlight .k, .highlight .kn, .highlight .kp, .highlight .kr, .highlight .kv {
+  color: #aa759f;
+}
+.highlight .kc {
+  color: #d28445;
+}
+.highlight .kt {
+  color: #d28445;
+}
+.highlight .kd {
+  color: #d28445;
+}
+.highlight .s, .highlight .sb, .highlight .sc, .highlight .sd, .highlight .s2, .highlight .sh, .highlight .sx, .highlight .s1 {
+  color: #90a959;
+}
+.highlight .sr {
+  color: #75b5aa;
+}
+.highlight .si {
+  color: #8f5536;
+}
+.highlight .se {
+  color: #8f5536;
+}
+.highlight .nn {
+  color: #f4bf75;
+}
+.highlight .nc {
+  color: #f4bf75;
+}
+.highlight .no {
+  color: #f4bf75;
+}
+.highlight .na {
+  color: #6a9fb5;
+}
+.highlight .m, .highlight .mf, .highlight .mh, .highlight .mi, .highlight .il, .highlight .mo, .highlight .mb, .highlight .mx {
+  color: #90a959;
+}
+.highlight .ss {
+  color: #90a959;
+}
+    </style>
+    <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" media="print" />
+    <link href="stylesheets/custom.css" rel="stylesheet" media="screen" />
+      <script src="javascripts/all.js"></script>
+  </head>
+
+  <body class="index" data-languages="[]">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" />
+      </span>
+    </a>
+    <div class="tocify-wrapper">
+      <img src="images/logo.png" />
+        <div class="lang-selector">
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <div id="toc">
+      </div>
+        <ul class="toc-footer">
+            <li><a href='mailto:support@smartcontract.com'>Need Help?</a></li>
+        </ul>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id="introduction">Introduction</h1>
+
+<p>Welcome to the WeiWatchers API documentation. WeiWatchers is a service which turns changes in Ethereum blockchains into push notifications for other applications. WeiWatchers can report on Ethereum event logs or account balance changes. Additionally, you can interact with your Ethereum node through Wei Watchers, sending in transactions and querying the network.</p>
+
+<p>Wei Watchers can be configured to run on any Ethereum chain, public or private, as long as it supports the JSON-RPC interface.</p>
+
+<p>If you want to view the source code or build the image locally, you can do so on <a href="https://github.com/oraclekit/wei_watchers">GitHub</a>.  </p>
+
+<h2 id="installation">Installation</h2>
+
+<h3 id="prerequisites">Prerequisites</h3>
+
+<ul>
+<li>Docker installed</li>
+<li>a running instance of Postgres, 9.4 or above</li>
+<li>a running instance of Ethereum with the <a href="https://github.com/ethereum/wiki/wiki/JSON-RPC">JSON-RPC interface</a> enabled</li>
+</ul>
+
+<h3 id="install">Install</h3>
+<pre class="highlight shell"><code>docker pull smartcontract/wei_watchers
+docker run -it --env-file<span class="o">=</span>.env smartcontract/smartoracle rake watcher:create
+</code></pre>
+
+<blockquote>
+<p>Which base URL would you like notifications to be sent to?</p>
+</blockquote>
+<pre class="highlight shell"><code>http://localhost:3000/wei_watchers_base/
+</code></pre>
+
+<blockquote>
+<p>Watcher Key:               RANDOM_KEY_1 &hellip;</p>
+</blockquote>
+<pre class="highlight shell"><code>docker run -t --env-file<span class="o">=</span>.env smartcontract/wei_watchers
+</code></pre>
+
+<p>First set up your configuration, by creating a <code class="prettyprint">.env</code> file, that has at least the variables set in the <a href="https://github.com/oraclekit/wei_watchers/blob/master/.env.example">.env.example</a>.</p>
+
+<p>Once you have set up your database and configuration, and you are ready to initialize WeiWatchers.</p>
+
+<p>Run the watcher creation command and provide the URL where you would like push notifications to be sent.</p>
+
+<p>Once a watcher is successfully initialized two sets of credentials will be printed out. The first credentials are used to create new event or account subscriptions on the watcher via API. The second is the HTTP basic authorization credentials that will be used by Wei Watchers when pushing updates out to applications.</p>
+
+<p><br/></p>
+
+<p>To have a managed instance spun up for you, contact us at <a href="mailto:support@smartcontract.com">support@smartcontract.com</a>.</p>
+
+<h2 id="authentication">Authentication</h2>
+
+<p>Wei Watchers currently uses HTTP basic authorization for authentication. There are two different types of credentials used for interacting with Wei Watchers, Watcher Credentials are used to send updates to Wei Watchers, and Notification Credentials are used by Wei Watchers to send updates to applications. The two are intentionally kept distinct, but can be made to match for convenience sake.</p>
+
+<p>Watchers and their credentials are currently created and managed via the command line only. Once created, Watcher information and settings are available via API accesss.</p>
+
+<h3 id="watcher-credentials">Watcher Credentials</h3>
+<pre class="highlight shell"><code>curl -u watcherKey:watcherSecret
+  http://localhost:3174/status
+</code></pre>
+
+<p>Watcher credentials are used to authenticate with Wei Watchers and create new notification subscriptions. Watcher credentials are required and automatically generated for you upon creating a new Watcher. They can be updated, but never removed.</p>
+
+<p>Watcher credentials are used to access all API endpoints and update settings. Wathcers are set up as a multitenant system; Watcher&rsquo;s cannot access or update information for other Watchers.</p>
+
+<h3 id="notification-credentials">Notification Credentials</h3>
+
+<p>Notification credentials are used by Wei Watchers to authenticate with the endpoints receiving the notifications. Notificaiton credentials are not required, although they are automatically generated upon creating a new Watcher. They can be updated or removed.</p>
+
+<h2 id="subscriptions">Subscriptions</h2>
+
+<p>There are currently two types of notifications to subscribe to, <a href="#event-subscriptions">event logs</a> and <a href="#balance-subscriptions">account balances</a>.</p>
+
+<h1 id="event-subscriptions">Event Subscriptions</h1>
+
+<p>Creating event subscriptions allows your application to have events pushed to you instead of regularly querying. Subscriptions support all the parameters of <a href="https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_newfilter">Ethereum log filters</a>.</p>
+
+<p>Subscriptions are identified and updated via a UUID that is generated on creation.</p>
+
+<h2 id="creation">Creation</h2>
+<pre class="highlight shell"><code>curl -u watcherKey:watcherSecret -X POST
+  -d <span class="s1">'{address: "0x00E89e4Ace8c83E6e345d6faA771E1E8c505F350", endAt: "1813520678"}'</span>
+  http://localhost:3174/api/event_subscriptions
+</code></pre>
+
+<blockquote>
+<p>Responds:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ccb04d98-44ca-4d1b-aaf2-2546ce6b56d5"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Event subscriptions are created support all the parameters of <a href="https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_newfilter">Ethereum log filters</a> and additionally can set a subscription expiration. All parameters are optional, but something other than the <code class="prettyprint">endAt</code> parameter must be specified.</p>
+
+<p>Upon the successful creation of an event subscription the UUID of the subscription is returned, otherwise a list of errors is returned. </p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>address</td>
+<td>string</td>
+<td>an Ethereum contract address</td>
+</tr>
+<tr>
+<td>endAt</td>
+<td>integer</td>
+<td>a Unix timestamp specifying when the subscription expires</td>
+</tr>
+<tr>
+<td>fromBlock</td>
+<td>integer</td>
+<td>block number of the earliest block to query from(defaults to the genesis block)</td>
+</tr>
+<tr>
+<td>toBlock</td>
+<td>integer</td>
+<td>block number of the latest block to query up to(defaults to the latest block)</td>
+</tr>
+<tr>
+<td>topics</td>
+<td>array</td>
+<td>array of topic IDs, to filter down to specific types of events at an address you would like updates on</td>
+</tr>
+</tbody></table>
+
+<h2 id="event-notifications">Event Notifications</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x00E89e4Ace8c83E6e345d6faA771E1E8c505F350"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"blockHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x4788f8c32b1bf4b3ae10b37d94bb19f0c14747b5d5d7331eef4397b184c14741"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"blockNumber"</span><span class="p">:</span><span class="w"> </span><span class="mi">974359</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4869204d6f6d21212121212131213121212e2e2e3f0000000000000000000000"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"logIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"subscription"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ccb04d98-44ca-4d1b-aaf2-2546ce6b56d5"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"topics"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"0x79bb13962aba40064cd5dec819f7622f541dbcb8b79961132a1993fdd900edf8"</span><span class="p">],</span><span class="w">
+  </span><span class="nt">"transactionHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x7cdce24fa32602e9fece7fd5a695736667eed8eb828306987498337f050ced76"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"transactionIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">28</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>address</td>
+<td>string</td>
+<td>Ethereum address at which the event was logged</td>
+</tr>
+<tr>
+<td>blockHash</td>
+<td>integer</td>
+<td>identifier of the block in which the event was logged</td>
+</tr>
+<tr>
+<td>blockNumber</td>
+<td>string</td>
+<td>height of the blockchain when the event was logged</td>
+</tr>
+<tr>
+<td>data</td>
+<td>string</td>
+<td>data that was logged by the event, represented as hex</td>
+</tr>
+<tr>
+<td>logIndex</td>
+<td>integer</td>
+<td>index of the event within the transaction that triggered it</td>
+</tr>
+<tr>
+<td>subscripiton</td>
+<td>integer</td>
+<td>UUID of the subscription which triggered the notification</td>
+</tr>
+<tr>
+<td>topics</td>
+<td>array</td>
+<td>list of event topics that the log emitted</td>
+</tr>
+<tr>
+<td>transactionHash</td>
+<td>string</td>
+<td>identifier of the transaction which logged the event</td>
+</tr>
+<tr>
+<td>transactionIndex</td>
+<td>integer</td>
+<td>index of the transaction within the block which logged the event</td>
+</tr>
+</tbody></table>
+
+<h1 id="balance-subscriptions">Balance Subscriptions</h1>
+
+<p>Creating balance subscriptions allows your application to receive notifcations when the balance of an account.</p>
+
+<p>Subscriptions are identified and updated via a UUID that is generated on creation.</p>
+
+<h2 id="creation">Creation</h2>
+<pre class="highlight shell"><code>curl -u watcherKey:watcherSecret -X POST
+  -d <span class="s1">'{address: "0x00E89e4Ace8c83E6e345d6faA771E1E8c505F350", endAt: "1813520678"}'</span>
+  http://localhost:3174/api/event_subscriptions
+</code></pre>
+
+<blockquote>
+<p>Responds:</p>
+</blockquote>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ccb04d98-44ca-4d1b-aaf2-2546ce6b56d5"</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<p>Event subscriptions are created support all the parameters of <a href="https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_newfilter">Ethereum log filters</a> and additionally can set a subscription expiration. All parameters are optional, but something other than the <code class="prettyprint">endAt</code> parameter must be specified.</p>
+
+<p>Upon the successful creation of an event subscription the UUID of the subscription is returned, otherwise a list of errors is returned. </p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>address</td>
+<td>string</td>
+<td>an Ethereum contract address</td>
+</tr>
+<tr>
+<td>endAt</td>
+<td>integer</td>
+<td>a Unix timestamp specifying when the subscription expires</td>
+</tr>
+<tr>
+<td>fromBlock</td>
+<td>integer</td>
+<td>block number of the earliest block to query from(defaults to the genesis block)</td>
+</tr>
+<tr>
+<td>toBlock</td>
+<td>integer</td>
+<td>block number of the latest block to query up to(defaults to the latest block)</td>
+</tr>
+<tr>
+<td>topics</td>
+<td>array</td>
+<td>array of topic IDs, to filter down to specific types of events at an address you would like updates on</td>
+</tr>
+</tbody></table>
+
+<h2 id="event-notifications">Event Notifications</h2>
+<pre class="highlight json"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x00E89e4Ace8c83E6e345d6faA771E1E8c505F350"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"blockHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x4788f8c32b1bf4b3ae10b37d94bb19f0c14747b5d5d7331eef4397b184c14741"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"blockNumber"</span><span class="p">:</span><span class="w"> </span><span class="mi">974359</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4869204d6f6d21212121212131213121212e2e2e3f0000000000000000000000"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"logIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"subscription"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ccb04d98-44ca-4d1b-aaf2-2546ce6b56d5"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"topics"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"0x79bb13962aba40064cd5dec819f7622f541dbcb8b79961132a1993fdd900edf8"</span><span class="p">],</span><span class="w">
+  </span><span class="nt">"transactionHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x7cdce24fa32602e9fece7fd5a695736667eed8eb828306987498337f050ced76"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"transactionIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">28</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>address</td>
+<td>string</td>
+<td>Ethereum address at which the event was logged</td>
+</tr>
+<tr>
+<td>blockHash</td>
+<td>integer</td>
+<td>identifier of the block in which the event was logged</td>
+</tr>
+<tr>
+<td>blockNumber</td>
+<td>string</td>
+<td>height of the blockchain when the event was logged</td>
+</tr>
+<tr>
+<td>data</td>
+<td>string</td>
+<td>data that was logged by the event, represented as hex</td>
+</tr>
+<tr>
+<td>logIndex</td>
+<td>integer</td>
+<td>index of the event within the transaction that triggered it</td>
+</tr>
+<tr>
+<td>subscripiton</td>
+<td>integer</td>
+<td>UUID of the subscription which triggered the notification</td>
+</tr>
+<tr>
+<td>topics</td>
+<td>array</td>
+<td>list of event topics that the log emitted</td>
+</tr>
+<tr>
+<td>transactionHash</td>
+<td>string</td>
+<td>identifier of the transaction which logged the event</td>
+</tr>
+<tr>
+<td>transactionIndex</td>
+<td>integer</td>
+<td>index of the transaction within the block which logged the event</td>
+</tr>
+</tbody></table>
+
+          
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+          </div>
+      </div>
+    </div>
+  </body>
+</html>
