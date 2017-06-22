@@ -207,7 +207,7 @@ docker run -it --env-file<span class="o">=</span>.env smartcontract/smartoracle 
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-<p>Event subscriptions are created support all the parameters of <a href="https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_newfilter">Ethereum log filters</a> and additionally can set a subscription expiration. All parameters are optional, but something other than the <code class="prettyprint">endAt</code> parameter must be specified.</p>
+<p>Event subscriptions are support all the parameters of <a href="https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_newfilter">Ethereum log filters</a> and additionally can set a subscription expiration. All parameters are optional, but something other than the <code class="prettyprint">endAt</code> parameter must be specified.</p>
 
 <p>Upon the successful creation of an event subscription the UUID of the subscription is returned, otherwise a list of errors is returned. </p>
 
@@ -315,25 +315,27 @@ docker run -it --env-file<span class="o">=</span>.env smartcontract/smartoracle 
 
 <h1 id="balance-subscriptions">Balance Subscriptions</h1>
 
-<p>Creating balance subscriptions allows your application to receive notifcations when the balance of an account.</p>
+<p>Creating balance subscriptions allows your application to receive notifcations when the ether balance of an account is updated, indicating money has been received or spent.</p>
 
 <p>Subscriptions are identified and updated via a UUID that is generated on creation.</p>
 
 <h2 id="creation">Creation</h2>
 <pre class="highlight shell"><code>curl -u watcherKey:watcherSecret -X POST
   -d <span class="s1">'{address: "0x00E89e4Ace8c83E6e345d6faA771E1E8c505F350", endAt: "1813520678"}'</span>
-  http://localhost:3174/api/event_subscriptions
+  http://localhost:3174/api/balance_subscriptions
 </code></pre>
 
 <blockquote>
 <p>Responds:</p>
 </blockquote>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
-  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ccb04d98-44ca-4d1b-aaf2-2546ce6b56d5"</span><span class="w">
+  </span><span class="nt">"id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"260ef138-ed2b-4f8b-8e4f-c1e5a25af628"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
-<p>Event subscriptions are created support all the parameters of <a href="https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_newfilter">Ethereum log filters</a> and additionally can set a subscription expiration. All parameters are optional, but something other than the <code class="prettyprint">endAt</code> parameter must be specified.</p>
+<p>Balance subscriptions simply require an address and an expiration time for the subscription.</p>
+
+<p>Balances are determined by checking after each block, so if money is received and transferred by a contract with an internal transaction that will not be reflected with a notification.</p>
 
 <p>Upon the successful creation of an event subscription the UUID of the subscription is returned, otherwise a list of errors is returned. </p>
 
@@ -347,41 +349,22 @@ docker run -it --env-file<span class="o">=</span>.env smartcontract/smartoracle 
 <tr>
 <td>address</td>
 <td>string</td>
-<td>an Ethereum contract address</td>
+<td>Ethereum address to be watched</td>
 </tr>
 <tr>
 <td>endAt</td>
 <td>integer</td>
 <td>a Unix timestamp specifying when the subscription expires</td>
 </tr>
-<tr>
-<td>fromBlock</td>
-<td>integer</td>
-<td>block number of the earliest block to query from(defaults to the genesis block)</td>
-</tr>
-<tr>
-<td>toBlock</td>
-<td>integer</td>
-<td>block number of the latest block to query up to(defaults to the latest block)</td>
-</tr>
-<tr>
-<td>topics</td>
-<td>array</td>
-<td>array of topic IDs, to filter down to specific types of events at an address you would like updates on</td>
-</tr>
 </tbody></table>
 
 <h2 id="event-notifications">Event Notifications</h2>
 <pre class="highlight json"><code><span class="p">{</span><span class="w">
   </span><span class="nt">"address"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x00E89e4Ace8c83E6e345d6faA771E1E8c505F350"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"blockHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x4788f8c32b1bf4b3ae10b37d94bb19f0c14747b5d5d7331eef4397b184c14741"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"blockNumber"</span><span class="p">:</span><span class="w"> </span><span class="mi">974359</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"data"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4869204d6f6d21212121212131213121212e2e2e3f0000000000000000000000"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"logIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"subscription"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ccb04d98-44ca-4d1b-aaf2-2546ce6b56d5"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"topics"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"0x79bb13962aba40064cd5dec819f7622f541dbcb8b79961132a1993fdd900edf8"</span><span class="p">],</span><span class="w">
-  </span><span class="nt">"transactionHash"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0x7cdce24fa32602e9fece7fd5a695736667eed8eb828306987498337f050ced76"</span><span class="p">,</span><span class="w">
-  </span><span class="nt">"transactionIndex"</span><span class="p">:</span><span class="w"> </span><span class="mi">28</span><span class="w">
+  </span><span class="nt">"currentBalance"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1000000"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"difference"</span><span class="p">:</span><span class="w"> </span><span class="s2">"600000"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"pastBalance"</span><span class="p">:</span><span class="w"> </span><span class="s2">"400000"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"subscription"</span><span class="p">:</span><span class="w"> </span><span class="s2">"260ef138-ed2b-4f8b-8e4f-c1e5a25af628"</span><span class="w">
 </span><span class="p">}</span><span class="w">
 </span></code></pre>
 
@@ -395,47 +378,27 @@ docker run -it --env-file<span class="o">=</span>.env smartcontract/smartoracle 
 <tr>
 <td>address</td>
 <td>string</td>
-<td>Ethereum address at which the event was logged</td>
+<td>Ethereum address whose balance was updated</td>
 </tr>
 <tr>
-<td>blockHash</td>
+<td>currentBalance</td>
 <td>integer</td>
-<td>identifier of the block in which the event was logged</td>
+<td>most recent ether balance of the account</td>
 </tr>
 <tr>
-<td>blockNumber</td>
+<td>difference</td>
+<td>integer</td>
+<td>reported change in ether</td>
+</tr>
+<tr>
+<td>pastBalance</td>
+<td>integer</td>
+<td>previous ether balance before the latest update</td>
+</tr>
+<tr>
+<td>subscription</td>
 <td>string</td>
-<td>height of the blockchain when the event was logged</td>
-</tr>
-<tr>
-<td>data</td>
-<td>string</td>
-<td>data that was logged by the event, represented as hex</td>
-</tr>
-<tr>
-<td>logIndex</td>
-<td>integer</td>
-<td>index of the event within the transaction that triggered it</td>
-</tr>
-<tr>
-<td>subscripiton</td>
-<td>integer</td>
-<td>UUID of the subscription which triggered the notification</td>
-</tr>
-<tr>
-<td>topics</td>
-<td>array</td>
-<td>list of event topics that the log emitted</td>
-</tr>
-<tr>
-<td>transactionHash</td>
-<td>string</td>
-<td>identifier of the transaction which logged the event</td>
-</tr>
-<tr>
-<td>transactionIndex</td>
-<td>integer</td>
-<td>index of the transaction within the block which logged the event</td>
+<td>UUID of the the related subscription</td>
 </tr>
 </tbody></table>
 
