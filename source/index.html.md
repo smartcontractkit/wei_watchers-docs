@@ -106,7 +106,7 @@ curl -u watcherKey:watcherSecret -X POST
 }
 ```
 
-Event subscriptions are created support all the parameters of [Ethereum log filters](https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_newfilter) and additionally can set a subscription expiration. All parameters are optional, but something other than the `endAt` parameter must be specified.
+Event subscriptions are support all the parameters of [Ethereum log filters](https://github.com/ethereum/wiki/wiki/JSON-RPC#eth_newfilter) and additionally can set a subscription expiration. All parameters are optional, but something other than the `endAt` parameter must be specified.
 
 Upon the successful creation of an event subscription the UUID of the subscription is returned, otherwise a list of errors is returned. 
 
@@ -145,3 +145,55 @@ subscripiton | integer | UUID of the subscription which triggered the notificati
 topics | array | list of event topics that the log emitted
 transactionHash | string | identifier of the transaction which logged the event
 transactionIndex | integer | index of the transaction within the block which logged the event
+
+
+# Balance Subscriptions
+
+Creating balance subscriptions allows your application to receive notifcations when the ether balance of an account is updated, indicating money has been received or spent.
+
+Subscriptions are identified and updated via a UUID that is generated on creation.
+
+## Creation
+```shell
+curl -u watcherKey:watcherSecret -X POST
+  -d '{address: "0x00E89e4Ace8c83E6e345d6faA771E1E8c505F350", endAt: "1813520678"}'
+  http://localhost:3174/api/balance_subscriptions
+```
+> Responds:
+
+```json
+{
+  "id": "260ef138-ed2b-4f8b-8e4f-c1e5a25af628"
+}
+```
+
+Balance subscriptions simply require an address and an expiration time for the subscription.
+
+Balances are determined by checking after each block, so if money is received and transferred by a contract with an internal transaction that will not be reflected with a notification.
+
+Upon the successful creation of an event subscription the UUID of the subscription is returned, otherwise a list of errors is returned. 
+
+Parameter | Type | Description
+---- | ----- | --------
+address | string | Ethereum address to be watched
+endAt | integer | a Unix timestamp specifying when the subscription expires
+
+## Event Notifications
+
+```json
+{
+  "address": "0x00E89e4Ace8c83E6e345d6faA771E1E8c505F350",
+  "currentBalance": "1000000",
+  "difference": "600000",
+  "pastBalance": "400000",
+  "subscription": "260ef138-ed2b-4f8b-8e4f-c1e5a25af628"
+}
+```
+
+Parameter | Type | Description
+---- | ----- | --------
+address | string | Ethereum address whose balance was updated
+currentBalance | integer | most recent ether balance of the account
+difference | integer | reported change in ether
+pastBalance | integer | previous ether balance before the latest update
+subscription | string | UUID of the the related subscription
