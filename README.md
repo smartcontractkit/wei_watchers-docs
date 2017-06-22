@@ -1,1 +1,1 @@
-### Documentation for [weiwatchers.github.io/api-docs](https://smartoracles.github.io/api-docs).
+### Documentation for [weiwatchers-docs.smartcontract.com](https://weiwatchers-docs.smartcontract.com).
