@@ -33,7 +33,7 @@ If you want to view the source code or build the image locally, you can do so on
 
 ```shell
 docker pull smartcontract/wei_watchers
-docker run -it --env-file=.env smartcontract/smartoracle rake watcher:create
+docker run -it --env-file=.env smartcontract/wei_watchers rake watcher:create
 ```
 
 > Which base URL would you like notifications to be sent to?
